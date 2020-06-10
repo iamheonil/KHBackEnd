@@ -38,8 +38,18 @@
 			var query = "num1=" + n1 + "&num2=" + n2 + "&oper=" + op;
 
 			// - - - - - Ajax 요청하기
-			$("#resultLayout").load(url, data); // POST 요청
+			// $("#resultLayout").load(url, data); // POST 요청
 			// $(#resultLayout).load(url, query); // GET 요청
+			
+			$("#resultLayout").load(url, data, function () {
+				console.log(".load() 함수 호출 완료");
+				
+				$("#num1").val("");
+				$("#num2").val("");
+				$("#oper").val("add");
+				
+				$("#num1").focus();
+			}); // POST 요청
 			
 		});
 	});
