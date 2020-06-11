@@ -41,6 +41,14 @@
 		</c:forEach>
 
 	</table>
-</div> <!-- div.container -->
+	<div class="text-center">
+		<ul class="pagination">
+			<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="i">
+				<li><a href="/board/list?curPage=${i }">${i }</a></li>
+			</c:forEach>
+		</ul>
+	</div>
+</div>
+<!-- div.container -->
 
 <c:import url="/WEB-INF/views/layout/footer.jsp"></c:import>
