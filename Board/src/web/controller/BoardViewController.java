@@ -13,8 +13,11 @@ import web.dto.Board;
 import web.service.face.BoardService;
 import web.service.impl.BoardServiceImpl;
 
-@WebServlet("/board/list")
-public class BoardListController extends HttpServlet {
+/**
+ * Servlet implementation class BoardViewController
+ */
+@WebServlet("/board/view")
+public class BoardViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardServiceImpl(); 
 	
@@ -22,16 +25,18 @@ public class BoardListController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		System.out.println("GET");
+		// req.getAttribute(name)
+		Board board = boardService.getBoardno(req);
 		
-		List<Board> boardList = boardService.getList();
+		// System.out.println(board);
+		// String no = req.getParameter("boardno");
 		
-		// System.out.println(boardList);
+		// System.out.println(no);
 		
-		req.setAttribute("BoardList", boardList);
+		req.setAttribute("Board", board);
 	
-		req.getRequestDispatcher("/WEB-INF/views/board/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/board/view.jsp").forward(req, resp);
 		
 	}
-	
 	
 }
