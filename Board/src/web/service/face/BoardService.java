@@ -23,6 +23,12 @@ public interface BoardService {
 	 */
 	public Board getBoardno(HttpServletRequest req);
 
+	
+	/**
+	 * 조회수를 +1
+	 * @param b
+	 * @return - board 
+	 */
 	public Board view(Board b);
 
 	/**

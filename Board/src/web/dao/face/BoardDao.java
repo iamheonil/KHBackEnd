@@ -20,14 +20,14 @@ public interface BoardDao {
 	 * @param no
 	 * @return
 	 */
-	public Board selectBoardByBoardno(int no);
+	public Board selectBoardByBoardno(Board boardno);
 
 	/**
-	 * 게시글 추천수에 대한 메소드
+	 * 게시글 조회수에 대한 메소드
 	 * 
 	 * @param b
 	 */
-	public void updateHit(Board b);
+	public void updateHit(Board board);
 
 	/**
 	 * 총 게시글 수 조회

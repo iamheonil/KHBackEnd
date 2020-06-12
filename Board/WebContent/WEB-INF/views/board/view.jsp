@@ -13,61 +13,44 @@
 
 <%@ page import="web.dto.Board"%>
 
-<%
-	Board b = (Board) request.getAttribute("Board");
-%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<c:import url="/WEB-INF/views/layout/header.jsp"></c:import>
 
-<!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<div class="container">
 
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<h1>게시글 상세보기</h1>
+<hr>
 
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-</head>
-<body>
-	<div class="container">
+<table class="table table-bordered">
+<tr>
+<td class="info">글번호</td><td colspan="3">${viewBoard.boardno }</td>
+</tr>
 
-		<h1>글 상세 페이지</h1>
-		<hr>
+<tr>
+<td class="info">제목</td><td colspan="3">${viewBoard.title }</td>
+</tr>
 
-		<table border="1">
+<tr>
+<td class="info">아이디</td><td>${viewBoard.id }</td>
+<td class="info">닉네임</td><td>[ 추후 추가 ]</td>
+</tr>
 
-			<tr>
-				<th>글번호</th>
-				<th>제목</th>
-				<th>아이디</th>
-				<th>본문</th>
-				<th>조회수</th>
-				<th>작성일</th>
-			</tr>
+<tr>
+<td class="info">조회수</td><td>${viewBoard.hit }</td>
+<td class="info">추천수</td><td>[ 추후 추가 ]</td>
+</tr>
 
+<tr>
+<td class="info">작성일</td><td colspan="3">${viewBoard.writtendate }</td>
+</tr>
 
-			<tr>
-				<td><%=b.getBoardno()%></td>
-				<td><%=b.getTitle()%></td>
-				<td><%=b.getId()%></td>
-				<td><%=b.getContent()%></td>
-				<td><%=b.getHit()%></td>
-				<td><%=b.getWrittendate()%></td>
-			</tr>
+<tr><td class="info"  colspan="4">본문</td></tr>
 
+<tr><td colspan="4">${viewBoard.content }</td></tr>
 
-		</table>
+</table>
 
-		<a href="/board/list">목록으로 돌아가기</a>
-	</div>
-	<!-- div container -->
-</body>
-</html>
+<a href="/board/list">목록으로 돌아가기</a>
+	
+</div> <!-- div.container -->
+
+<c:import url="/WEB-INF/views/layout/footer.jsp"></c:import>

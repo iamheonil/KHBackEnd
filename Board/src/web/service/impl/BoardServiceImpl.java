@@ -25,18 +25,29 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Board getBoardno(HttpServletRequest req) {
 
-		String sno = req.getParameter("boardno");
-		int no = Integer.parseInt(sno);
-
-		Board board = boardDao.selectBoardByBoardno(no);
-
-		return board;
+		Board boardno = new Board();
+		String param = req.getParameter("boardno");
+		if(param != null && !"".equals(param)) {
+			
+			//boardno 전달파라미터 추출
+			boardno.setBoardno( Integer.parseInt(param) );
+		}
+		
+		//결과 객체 반환
+		return boardno;
 	}
 
 	@Override
-	public Board view(Board b) {
-		// TODO Auto-generated method stub
-		return null;
+	public Board view(Board boardno) {
+		
+		Board board = boardDao.selectBoardByBoardno(boardno); 
+		
+		if(board != null) {
+			//게시글 조회수 증가
+			boardDao.updateHit(boardno);
+		}
+		
+		return board;
 	}
 
 	@Override

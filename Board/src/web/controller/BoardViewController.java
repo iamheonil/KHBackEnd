@@ -19,24 +19,23 @@ import web.service.impl.BoardServiceImpl;
 @WebServlet("/board/view")
 public class BoardViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private BoardService boardService = new BoardServiceImpl(); 
+	private BoardService boardService = new BoardServiceImpl();
 	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		System.out.println("GET");
-		// req.getAttribute(name)
-		Board board = boardService.getBoardno(req);
-		
-		// System.out.println(board);
-		// String no = req.getParameter("boardno");
-		
-		// System.out.println(no);
-		
-		req.setAttribute("Board", board);
-	
+
+		// 전달파라미터 얻기 - boardno
+		Board boardno = boardService.getBoardno(req);
+
+		// 상세보기 결과 조회
+		Board viewBoard = boardService.view(boardno);
+
+		// 조회결과 MODEL값 전달
+		req.setAttribute("viewBoard", viewBoard);
+
 		req.getRequestDispatcher("/WEB-INF/views/board/view.jsp").forward(req, resp);
-		
+
 	}
-	
+
 }

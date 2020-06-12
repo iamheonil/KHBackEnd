@@ -51,5 +51,5 @@
 <body>
 
 	<div id="header">
-		<h1>니리니리</h1>
+		<h1><a href="/main">니리니리</a></h1>
 	</div>

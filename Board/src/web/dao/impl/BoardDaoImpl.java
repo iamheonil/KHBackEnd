@@ -56,23 +56,26 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public Board selectBoardByBoardno(int no) {
+	public Board selectBoardByBoardno(Board board) {
 		conn = JDBCTemplate.getConnection();
 
 		String sql = "";
 		sql += "SELECT * FROM BOARD WHERE BOARDNO = ? ORDER BY BOARDNO ";
 
-		Board blist = new Board();
+		// 결과 저장할 Null 객체
+		Board blist = null;
 
 		try {
 			ps = conn.prepareStatement(sql);
 
-			ps.setInt(1, no);
+			ps.setInt(1, board.getBoardno());
 
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
 
+				blist = new Board();
+				
 				blist.setBoardno(rs.getInt("boardno"));
 				blist.setTitle(rs.getString("title"));
 				blist.setId(rs.getString("id"));
@@ -93,8 +96,30 @@ public class BoardDaoImpl implements BoardDao {
 	}
 
 	@Override
-	public void updateHit(Board b) {
-		// TODO Auto-generated method stub
+	public void updateHit(Board board) {
+		//DB연결 객체
+				conn = JDBCTemplate.getConnection();
+				
+				//SQL 작성
+				String sql = "";
+				sql += "UPDATE board";
+				sql += " SET hit = hit + 1";
+				sql += " WHERE boardno = ?";
+				
+				
+				try {
+					ps = conn.prepareStatement(sql); //SQL수행 객체
+					
+					ps.setInt(1, board.getBoardno()); //조회할 게시글 번호 적용
+					
+					ps.executeUpdate(); //SQL 수행
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					//DB객체 닫기
+					JDBCTemplate.close(ps);
+				}
 
 	}
 
