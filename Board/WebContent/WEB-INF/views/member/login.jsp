@@ -1,24 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<h1>로그인 폼</h1>
-<hr>
+<c:import url="/WEB-INF/views/layout/header.jsp" />
 
-<form action="/member/login" method="post">
+<script type="text/javascript">
+$(document).ready(function() {
+	//페이지 첫 접속 시 입력창으로 포커스 이동
+	$("input").eq(0).focus();
+	
+	//패스워드 입력 창에서 엔터 입력 시 form submit
+	$("input").eq(1).keydown(function(key) {
+		if(key.keyCode == 13) {
+			$(this).parents("form").submit();
+		}
+	})
 
-	아이디 : <input type="text" name="uid" id="uid"> 
-	<br><br><br>
-	비밀번호 : <input type="text" name="upw" id="upw">
-	<br><br><br>
-	<button>로그인하기</button>
+	//로그인 버튼 클릭 시 form submit
+	$("#btnLogin").click(function() {
+		$(this).parents("form").submit();
+	})
+	
+	//취소 버튼 누르면 뒤로가기
+	$("#btnCancel").click(function() {
+		history.go(-1);
+	})
+
+});
+</script>
+
+<style type="text/css">
+form {
+	width: 400px;
+	margin: 0 auto;
+}
+</style>
+
+<form action="/member/login" method="post" class="form-horizontal">
+	<div class="form-group">
+		<label for="userid" class="control-label">아이디</label>
+		<input type="text" id="userid" name="userid" class="form-control"/>
+	</div>
+	<div class="form-group">
+		<label for="userpw" class="control-label">패스워드</label>
+		<input type="text" id="userpw" name="userpw" class="form-control"/>
+	</div>
+
+	<div class="text-center">
+		<button type="button" id="btnLogin" class="btn btn-primary">로그인</button>
+		<button type="button" id="btnCancel" class="btn btn-danger">취소</button>
+	</div>
 </form>
 
-</body>
-</html>
+<c:import url="/WEB-INF/views/layout/footer.jsp" />

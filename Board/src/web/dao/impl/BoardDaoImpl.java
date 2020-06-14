@@ -75,7 +75,7 @@ public class BoardDaoImpl implements BoardDao {
 			while (rs.next()) {
 
 				blist = new Board();
-				
+
 				blist.setBoardno(rs.getInt("boardno"));
 				blist.setTitle(rs.getString("title"));
 				blist.setId(rs.getString("id"));
@@ -97,29 +97,28 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public void updateHit(Board board) {
-		//DB연결 객체
-				conn = JDBCTemplate.getConnection();
-				
-				//SQL 작성
-				String sql = "";
-				sql += "UPDATE board";
-				sql += " SET hit = hit + 1";
-				sql += " WHERE boardno = ?";
-				
-				
-				try {
-					ps = conn.prepareStatement(sql); //SQL수행 객체
-					
-					ps.setInt(1, board.getBoardno()); //조회할 게시글 번호 적용
-					
-					ps.executeUpdate(); //SQL 수행
-					
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} finally {
-					//DB객체 닫기
-					JDBCTemplate.close(ps);
-				}
+		// DB연결 객체
+		conn = JDBCTemplate.getConnection();
+
+		// SQL 작성
+		String sql = "";
+		sql += "UPDATE board";
+		sql += " SET hit = hit + 1";
+		sql += " WHERE boardno = ?";
+
+		try {
+			ps = conn.prepareStatement(sql); // SQL수행 객체
+
+			ps.setInt(1, board.getBoardno()); // 조회할 게시글 번호 적용
+
+			ps.executeUpdate(); // SQL 수행
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// DB객체 닫기
+			JDBCTemplate.close(ps);
+		}
 
 	}
 
@@ -191,7 +190,7 @@ public class BoardDaoImpl implements BoardDao {
 
 			ps.setInt(1, paging.getStartNo());
 			ps.setInt(2, paging.getEndNo());
-			
+
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -214,5 +213,33 @@ public class BoardDaoImpl implements BoardDao {
 		}
 
 		return blist;
+	}
+
+	@Override
+	public void insert(Board b) {
+
+		conn = JDBCTemplate.getConnection();
+
+		String sql = "";
+
+		sql += "INSERT INTO board (BOARDNO, TITLE, ID, CONTENT, HIT, WRITTENDATE) VALUES (board_seq.nextval, ?, ?, ?, '0', SYSDATE)";
+
+		try {
+			ps = conn.prepareStatement(sql);
+
+			ps.setString(1, b.getTitle());
+			ps.setString(2, b.getId());
+			ps.setString(3, b.getContent());
+
+			ps.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(ps);
+		}
+//		System.out.println(b.getTitle());
+//		System.out.println(b.getId());
+//		System.out.println(b.getContent());
 	}
 }

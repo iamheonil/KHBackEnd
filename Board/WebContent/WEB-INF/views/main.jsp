@@ -21,19 +21,19 @@
  
 <c:import url="/WEB-INF/views/layout/header.jsp"></c:import>
 
+<!-- 비로그인상태 -->
+<c:if test="${not login }">
+<strong>로그인이 필요합니다</strong><br>
+<button onclick='location.href="/member/login";'>로그인</button>
+<button onclick='location.href="/member/join";'>회원가입</button>
+</c:if>
 
-
-
-<h1>메인입니다</h1>
-<hr>
-
-안녕하세요! ${memberView.id } 님, <br><br>
-패스워드 : ${memberView.pw } <br><br>
-닉네임 : ${memberView.nick } <br><br>
-
-<br>
-<hr>
-<a href="/board/list"><button>게시판 목록 버튼</button></a> &nbsp; <button onclick="logout();">로그아웃</button>
+<!-- 로그인상태 -->
+<c:if test="${login }">
+<strong>${usernick } 님, 환영합니다</strong><br>
+<button onclick='location.href="/board/list";'>게시판 가기</button>
+<button onclick='location.href="/member/logout";'>로그아웃</button>
+</c:if>
 
 <br>
 <c:import url="/WEB-INF/views/layout/footer.jsp"></c:import>

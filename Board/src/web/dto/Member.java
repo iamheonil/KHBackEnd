@@ -2,37 +2,37 @@ package web.dto;
 
 public class Member {
 
-	private String id;
-	private String pw;
-	private String nick;
+	private String userid;
+	private String userpw;
+	private String usernick;
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getUserpw() {
+		return userpw;
+	}
+
+	public void setUserpw(String userpw) {
+		this.userpw = userpw;
+	}
+
+	public String getUsernick() {
+		return usernick;
+	}
+
+	public void setUsernick(String usernick) {
+		this.usernick = usernick;
+	}
 
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", pw=" + pw + ", nick=" + nick + "]";
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getPw() {
-		return pw;
-	}
-
-	public void setPw(String pw) {
-		this.pw = pw;
-	}
-
-	public String getNick() {
-		return nick;
-	}
-
-	public void setNick(String nick) {
-		this.nick = nick;
+		return "Member [userid=" + userid + ", userpw=" + userpw + ", usernick=" + usernick + "]";
 	}
 
 }

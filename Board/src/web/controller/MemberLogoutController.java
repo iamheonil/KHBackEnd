@@ -17,19 +17,13 @@ public class MemberLogoutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		System.out.println("버튼 눌림");
-		
-		// 세션 객체 얻기
-		HttpSession session = req.getSession();
+		// 세션 정보 지우기 - 로그아웃
+		req.getSession().invalidate();
 
-		// 세션 정보 삭제
-		session.invalidate();
-
-		// View 지정
-		req.getRequestDispatcher("/WEB-INF/views/member/login.jsp").forward(req, resp);
+		// 메인화면으로 리다이렉션
+		resp.sendRedirect("/");
 
 	}
 

@@ -17,6 +17,20 @@
 <div class="container">
 
 	<h1>글 목록</h1>
+
+<!-- 로그인상태 -->
+<div style="text-align:right;">
+	<c:if test="${login }">
+		<strong>${usernick } 님</strong><br>
+		<button onclick='location.href="/board/write";'>글쓰기</button>
+	</c:if>
+	
+	<c:if test="${not login }">
+		<strong>로그인이 필요합니다</strong><br>
+		<button onclick='location.href="/member/login";'>로그인</button>
+		<button onclick='location.href="/member/join";'>회원가입</button>
+	</c:if>
+</div>	
 	<hr>
 
 	<table class="table table-striped table-hover table-condensed">

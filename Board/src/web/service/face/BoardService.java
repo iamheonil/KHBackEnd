@@ -45,5 +45,22 @@ public interface BoardService {
 	 * @return list; - 게시글 전체 조회 결과 리스트
 	 */
 	public List<Board> getList(Paging paging);
+	
+	
+	/**
+	 * 게시글을 삽입한다.
+	 * @param b - 요청 정보 객체
+	 * @return board - 삽입이 완료된 객체
+	 */
+	public void write(Board b);
+	
+	
+	/**
+	 * 게시글을 작성, 제목과 Content 부분을 받아옴
+	 * @param req - 게시글의 제목과 내용 부분
+	 * @return Board - 게시글 
+	 */
+	public Board getBoard(HttpServletRequest req);
+	
 
 }

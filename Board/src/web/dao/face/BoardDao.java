@@ -43,5 +43,11 @@ public interface BoardDao {
 	 * @return list - 페이징 적용한 전체 글 목록 출력 해주는 Method
 	 */
 	public List<Board> selectAll(Paging paging);
+	
+	/**
+	 * 게시글 인서트
+	 * @param b - 요청 객체 정보
+	 */
+	public void insert(Board b);
 
 }
