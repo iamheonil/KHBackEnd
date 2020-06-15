@@ -10,6 +10,7 @@ import java.util.List;
 import dbutil.JDBCTemplate;
 import web.dao.face.BoardDao;
 import web.dto.Board;
+import web.dto.BoardFile;
 import web.util.Paging;
 
 public class BoardDaoImpl implements BoardDao {
@@ -242,4 +243,72 @@ public class BoardDaoImpl implements BoardDao {
 //		System.out.println(b.getId());
 //		System.out.println(b.getContent());
 	}
+
+	@Override
+	public int selectBoardno() {
+		conn = JDBCTemplate.getConnection();
+
+		String sql = "";
+		sql += "SELECT board_seq.nextval FROM dual";
+
+		// 결과 저장할 Null 객체
+		int boardNo = 0;
+
+		try {
+			ps = conn.prepareStatement(sql);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				boardNo = rs.getInt(1);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(ps);
+		}
+
+		return boardNo;
+
+	}
+
+	@Override
+	public void insertFile(BoardFile boardFile) {
+		conn = JDBCTemplate.getConnection();
+
+		int boardno = selectBoardno();
+		
+		// System.out.println("@@@@@@" + boardno);
+
+		String sql = "";
+		sql += "INSERT INTO BOARDFILE (fileno, boardno, originname, storedname, filesize, writedate) VALUES (boardfile_seq.nextval, ?, ?, ?, ?, SYSDATE)";
+
+		try {
+			ps = conn.prepareStatement(sql);
+
+			// 파일 업로드 정보 삽입
+			ps.setInt(1, boardno - 1);
+			ps.setString(2, boardFile.getOriginName());
+			ps.setString(3, boardFile.getStoredName());
+			ps.setInt(4, boardFile.getFilesize());
+
+			// ps.setString(1, boardFile.getOriginName());
+			// ps.setString(2, boardFile.getStoredName());
+			// ps.setInt(3, boardFile.getFilesize());
+
+			// SQL 수행
+			ps.executeUpdate(sql);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// 보다 쉬워진 자원해제
+			JDBCTemplate.close(ps);
+		}
+
+	}
+
 }

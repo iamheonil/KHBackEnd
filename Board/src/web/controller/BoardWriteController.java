@@ -30,27 +30,35 @@ public class BoardWriteController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	
+
 //		Member member = memberService.getLoginMember(req);
 //		
 //		member = memberService.info(member);
 //		
 //		HttpSession session = req.getSession();
 //		session.setAttribute("writer", member.getUsernick());
-		
+
 		req.getRequestDispatcher("/WEB-INF/views/board/write.jsp").forward(req, resp);
-	
+
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		Board param = boardService.getBoard(req);
+
+//		int testNum = boardDao.selectBoardno();
+
+		System.out.println(param);
+//		System.out.println(testNum);
+
+		// boardService.write(param);
+		// boardService.write(req);
 		
-		Board param = boardService.getBoard(req); 
-		
-		boardDao.insert(param);
-		
+		boardService.write(req, resp);
+
 		resp.sendRedirect("/board/list");
-		
+
 	}
-	
+
 }

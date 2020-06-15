@@ -3,6 +3,7 @@ package web.service.face;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import web.dto.Board;
 import web.util.Paging;
@@ -53,6 +54,14 @@ public interface BoardService {
 	 * @return board - 삽입이 완료된 객체
 	 */
 	public void write(Board b);
+	
+	
+	/**
+	 * 게시글을 삽입한다.
+	 * (첨부파일 기능 추가)
+	 * @param req - 요청 정보 객체
+	 */
+	public void write(HttpServletRequest req, HttpServletResponse resp);
 	
 	
 	/**
