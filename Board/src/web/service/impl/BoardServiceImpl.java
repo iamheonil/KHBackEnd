@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import com.oreilly.servlet.MultipartRequest;
 
 import web.dao.face.BoardDao;
 import web.dao.impl.BoardDaoImpl;
@@ -118,212 +121,184 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void write(HttpServletRequest req, HttpServletResponse resp) {
+	public void write(HttpServletRequest req) {
 
-		// ParamData paramData = new ParamData();
+		// ----------- urlencoded 처리 -----------
+//		Board board = new Board();
+//
+//		board.setTitle( req.getParameter("title") );
+//		board.setContent( req.getParameter("content") );
+//
+//		//작성자id 처리
+//		board.setId((String) req.getSession().getAttribute("userid"));
+//
+//		if(board.getTitle()==null || "".equals(board.getTitle())) {
+//			board.setTitle("(제목없음)");
+//		}
+//
+//		boardDao.insert(board);
+		// ---------------------------------------
 
-		// Response Object Content-Type Setting
-		resp.setContentType("text/html; charset=utf-8");
+		// 게시글 정보 저장할 객체
+		Board board = null;
 
-		// Response Object Write Stream
-		PrintWriter out = null;
+		// 첨부파일 정보 저장할 객체
+		BoardFile boardFile = null;
 
-		try {
-			out = resp.getWriter();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// 1. 파일 업로드 형태가 데이터가 맞는지 검사한다.
-		// 요청 메시지 Content-Type 이 multipart/form-data 가 맞는지 확인한다.
+		// 파일업로드 형태의 데이터가 맞는지 검사
 		boolean isMultipart = false;
 		isMultipart = ServletFileUpload.isMultipartContent(req);
 
-		// 1-1. multipart/form-data 인코딩으로 전송되지 않았을 경우 처리 중단하기
+		// multipart/form-data 인코딩으로 전송되지 않았을 경우
 		if (!isMultipart) {
-			out.append("<h1>enctype이 multipart/form-data 가 아닙니다.</h1>");
-			out.append("<a href='/commons/fileupload'>업로드 페이지로 이동</a>");
+			System.out.println("[ERROR] multipart/form-data 형식이 아님");
 
-			return;
+			return; // fileupload() 메소드 실행 중지
 		}
 
-		// 1-2. 여기 이후부터는 multipart/form-data 로 요청된 상황
-		// 파일이 전송되었음. 정상적인 흐름으로 처리
+		// 게시글 정보 저장할 객체 생성
+		board = new Board();
 
-		System.out.println("TEST");
-
-		// 2. 업로드된 파일을 처리하는 아이템팩토리 객체 생성
-		// ItemFactory : 업로드된 데이터를 처리하는 방식을 설정하는 클래스
-		//
-
-		// FileItem : 클라이언트로부터 전송된 데이터를 객체화시킨 것
-
-		// DiskFileItemFactory class
-		// HDD 기반의 파일 아이템 처리 API
-		// 업로드된 파일을 HDD 에 임시 저장하고 나중에 처리한다.
+		// 디스트기반 아이템 팩토리
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 
-		// 3. 업로드 된 파일아이템의 용량이 적당히 작으면 메모리에서 처리하도록 설정
+		// 메모리 처리 사이즈 지정
+		factory.setSizeThreshold(1 * 1024 * 1024); // 1MB
 
-		int maxMem = 1 * 1024 * 1024; // 1MB
-		factory.setSizeThreshold(maxMem);
-
-		// 4. 용량이 적당히 크면 임시파일(HDD)을 만들어서 처리하도록 설정, 임시파일 폴더 설정
-		ServletContext context = req.getServletContext();
-
-		String path = context.getRealPath("tmp");
-
-		File repository = new File(path); // 임시 저장 폴더
-
-		System.out.println("repository : " + repository);
-
+		// 임시 저장소 설정
+		File repository = new File(req.getServletContext().getRealPath("tmp"));
 		factory.setRepository(repository);
 
-		// 5. 업로드 허용 용량 기준을 넘지 않을 경우에만 파일 업로드 되도록 설정,
-		// 기준을 넘으면 업로드 차단한다.
-		int maxFile = 10 * 1024 * 1024; // 10mb
-
-		// 파일업로드 수행 객체 생성
-		// DiskFileItemFactory 객체 이용해서 생성함
+		// 파일업로드 객체 생성
 		ServletFileUpload upload = new ServletFileUpload(factory);
 
-		// 파일 업로드 용량제한 설정 : 10Mb
-		upload.setFileSizeMax(maxFile);
+		// 업로드 용량 제한
+		upload.setFileSizeMax(10 * 1024 * 1024); // 10MB
 
-		// ------------------------ 파일 업로드 준비 완료! ------------------------
-
-		// 6. 업로드된 데이터를 추출한다.(Parsing)
-		// 임시파일 업로드도 같이 수행된다.
+		// 전달 데이터 파싱
 		List<FileItem> items = null;
-
 		try {
 			items = upload.parseRequest(req);
 		} catch (FileUploadException e) {
 			e.printStackTrace();
 		}
 
-		// 7. 파싱된 요청정보 데이터 처리하기.
-		// items 리스트에 요청파라미터 (파일 포함)이 파싱되어 있음
-		// 요청 정보의 3가지 형태
-		// 1. 빈 파일(용량이 0인 파일)
-		// 2. form - data (전달 파라미터)
-		// 3. 파일
-
-		// 파일 아이템 반복자
+		// 추출된 전달파라미터 처리 반복자
 		Iterator<FileItem> iter = items.iterator();
 
-		// 모든 요청정보를 처리하는 반복문
+		// 모든 요청 정보 처리하기
 		while (iter.hasNext()) {
-
-			// 요청 정보 객체
 			FileItem item = iter.next();
 
-			// 1) 빈 파일에 대한 처리
+			// 1) 빈 파일 처리
 			if (item.getSize() <= 0)
 				continue;
 
-			// 2) 기본 전달 파라미터에 대한 처리
+			// 2) 일반적인 요청 데이터 처리
 			if (item.isFormField()) {
-				// form-data (form field) 는 key=value 쌍으로 전달된다.
 
-				// key 는 item.getFieldName() 으로 얻어옴
-				// value 는 item.getString() 으로 얻어옴
+				String key = item.getFieldName(); // 키 추출
+				if ("title".equals(key)) { // 전달파라미터 name이 "title"
+					try {
+						board.setTitle(item.getString("UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 
-				// 전달값이 한글일경우 인코딩 설정을 따로 해야한다.
-				// item.getString("UTF-8); 을 사용한다.
-				// 기존에 사용중이던 req.setCharacterEncoding("UTF-8") 은 적용되지 않는다.
+				} else if ("content".equals(key)) { // 전달파라미터 name이 "content"
+					try {
+						board.setContent(item.getString("UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 
-				// 기본 처리 방식
-				out.println("= = = = = = = = = 폼 필드 = = = = = = = = = =<br>");
-				out.println("키 : " + item.getFieldName() + "<br>");
-				try {
-					out.println("값 : " + item.getString("UTF-8") + "<br>");
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				
-				// 키 값에 따라 처리하는 방식
-//				String key = item.getFieldName();
-//
-//				if ("title".equals(key)) { // 전달 파라미터 name이 "title"
-//					try {
-//						boardFile.setTitle(item.getString("UTF-8"));
-//					} catch (UnsupportedEncodingException e) {
-//						e.printStackTrace();
-//					}
-//				} else if ("data1".equals(key)) { // 전달 파라미터 name이 "data1"
-//					try {
-//						paramData.setData1(item.getString("UTF-8"));
-//					} catch (UnsupportedEncodingException e) {
-//						e.printStackTrace();
-//					}
-//				} else if ("data2".equals(key)) { // 전달 파라미터 name이 "data2"
-//					try {
-//						paramData.setData2(item.getString("UTF-8"));
-//					} catch (UnsupportedEncodingException e) {
-//						e.printStackTrace();
-//					}
-//				}
+				} // key값 비교 if end
 
-				// ===========================
+			} // if( item.isFormField() ) end - 폼필드 확인
 
-			} // if (item.isFormField()) End
-
-			// 3) 파일에 대한 처리
+			// 3) 파일 처리
 			if (!item.isFormField()) {
 
-				// 서버에 저장되는 파일명을 "년월일시분초밀리초.확장자로 변경
-				// 파일명 - 년월일시분초밀리초
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssS");
-				String rename = sdf.format(new Date());
+				// --- UUID 생성 ---
+				UUID uuid = UUID.randomUUID(); // 랜덤 UID 생성
+				String u = uuid.toString().split("-")[0]; // 8자리 uid
+				// -----------------
 
-				// 확장자
-				String origin = item.getName();
-				String ext = origin.substring(origin.lastIndexOf(".") + 1);
+				// --- 로컬 저장소의 파일 객체 생성 ---
+				File up = new File(req.getServletContext().getRealPath("upload") // 업로드될 폴더 경로
+						, item.getName() + "_" + u // 원본파일명_uid
+				);
+				// ------------------------------------
 
-				// 저장 될 이름
-				String stored = rename + "." + ext;
+				// --- 첨부파일 정보 객체 ---
+				boardFile = new BoardFile(); // 객체 생성
+				boardFile.setOriginName(item.getName()); // 원본파일명
+				boardFile.setStoredName(item.getName() + "_" + u); // 저장파일명
+				boardFile.setFilesize((int) item.getSize());
+				// --------------------------
 
-				// System.out.println("TEST !.! origin file name : " + origin);
-
-				// System.out.println("TEST !.! stored file name : " + stored);
-
-				// DB에 업로드된 파일에 대한 정보 기록하기
-				BoardFile boardFile = new BoardFile();
-
-				boardFile.setOriginName(origin);
-				boardFile.setStoredName(stored);
-
-				System.out.println(boardFile);
-
-				boardDao.insertFile(boardFile);
-
-				// 파일을 처리하는 방식
-				// 3.1 ) 파일을 웹 서버의 로컬 디스크에 저장, 파일의 정보를 DB에 기록해야한다.
-				// 실제 업로드 파일
-				File up = new File(context.getRealPath("upload"), // 업로드 될 폴더
-						// item.getName(), // 원본파일의 이름
-						stored); // 저장 파일의 이름(변환한 것)
-
+				// --- 처리 완료된 파일 업로드 하기 ---
 				try {
-					item.write(up); // 실제 업로드(최종 결과 파일 생성)
+					item.write(up); // 실제 업로드
 					item.delete(); // 임시 파일 삭제
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				// -----------------------------------
 
-				// 3.2 ) 테이블의 컬럼으로 파일의 내용을 저장, BLOB 타입을 사용한다.
-				// 따로 수업에서 다루지는 않는다.
-			}
+			} // 파일 처리 end
 
-		} // while End
+		} // while( iter.hasNext() ) end - FileItem 반복 처리
 
-//		Board board = new Board();
-//
-//		board.setTitle(req.getParameter("title"));
-//		board.setTitle(req.getParameter("title"));
-//		board.setId(req.getParameter("writer"));
+		// DB데이터 입력
+
+		// 게시글 작성자 id 입력
+		board.setId((String) req.getSession().getAttribute("userid"));
+
+		// 게시글 번호 생성 - Dao 이용
+		int boardno = boardDao.selectBoardno();
+
+		// 게시글 정보가 있을 경우
+		if (board != null) {
+
+			// 게시글 번호 입력
+			board.setBoardno(boardno);
+
+			// 게시글 삽입
+			boardDao.insert(board);
+		}
+
+		// 첨부파일 정보가 있을 경우
+		if (boardFile != null) {
+			// 게시글 번호 입력
+			boardFile.setBoardno(boardno);
+
+			// 첨부파일 삽입
+			boardDao.insertFile(boardFile);
+		}
 
 	}
+
+	@Override
+	public BoardFile viewFile(Board viewBoard) {
+		return boardDao.selectFile(viewBoard);
+	}
+
+	@Override
+	public void delete(Board board) {
+
+		boardDao.delete(board);
+
+	}
+
+//	@Override
+//	public String getNick(Board viewBoard) {
+//		return boardDao.selectNickByUserid(viewBoard);
+//	}
+//
+//	@Override
+//	public BoardFile viewFile(Board viewBoard) {
+//		return boardDao.selectFile(viewBoard);
+//	}
 
 }

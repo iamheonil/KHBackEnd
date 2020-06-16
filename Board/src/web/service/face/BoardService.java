@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import web.dto.Board;
+import web.dto.BoardFile;
 import web.util.Paging;
 
 public interface BoardService {
@@ -61,7 +62,7 @@ public interface BoardService {
 	 * (첨부파일 기능 추가)
 	 * @param req - 요청 정보 객체
 	 */
-	public void write(HttpServletRequest req, HttpServletResponse resp);
+	public void write(HttpServletRequest req);
 	
 	
 	/**
@@ -71,5 +72,19 @@ public interface BoardService {
 	 */
 	public Board getBoard(HttpServletRequest req);
 	
+	
+	/**
+	 * 첨부파일의 정보를 가져온다!
+	 * @param board
+	 * @return
+	 */
+	public BoardFile viewFile(Board viewBoard);
+	
+	
+	/**
+	 * 게시글을 삭제한다.
+	 * @param board - 요청 정보 객체
+	 */
+	public void delete(Board board);
 
 }

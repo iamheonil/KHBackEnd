@@ -45,17 +45,18 @@ public class BoardWriteController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		Board param = boardService.getBoard(req);
+		// Board param = boardService.getBoard(req);
 
-//		int testNum = boardDao.selectBoardno();
+		// int testNum = boardDao.selectBoardno();
 
-		System.out.println(param);
-//		System.out.println(testNum);
+		// System.out.println(param);
+		// System.out.println(testNum);
 
 		// boardService.write(param);
 		// boardService.write(req);
-		
-		boardService.write(req, resp);
+
+		// boardDao.insert(param);
+		boardService.write(req);
 
 		resp.sendRedirect("/board/list");
 

@@ -277,35 +277,95 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public void insertFile(BoardFile boardFile) {
-		conn = JDBCTemplate.getConnection();
+		conn = JDBCTemplate.getConnection(); // DB 연결
 
-		int boardno = selectBoardno();
-		
-		// System.out.println("@@@@@@" + boardno);
-
+		// 다음 게시글 번호 조회 쿼리
 		String sql = "";
-		sql += "INSERT INTO BOARDFILE (fileno, boardno, originname, storedname, filesize, writedate) VALUES (boardfile_seq.nextval, ?, ?, ?, ?, SYSDATE)";
+		sql += "INSERT INTO boardfile(fileno, boardno, originname, storedname, filesize)";
+		sql += " VALUES ( boardfile_seq.nextval, ?, ?, ?, ? )";
 
 		try {
+			// DB작업
 			ps = conn.prepareStatement(sql);
 
-			// 파일 업로드 정보 삽입
-			ps.setInt(1, boardno - 1);
+			ps.setInt(1, boardFile.getBoardno());
 			ps.setString(2, boardFile.getOriginName());
 			ps.setString(3, boardFile.getStoredName());
 			ps.setInt(4, boardFile.getFilesize());
 
-			// ps.setString(1, boardFile.getOriginName());
-			// ps.setString(2, boardFile.getStoredName());
-			// ps.setInt(3, boardFile.getFilesize());
-
-			// SQL 수행
-			ps.executeUpdate(sql);
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// 보다 쉬워진 자원해제
+			JDBCTemplate.close(ps);
+		}
+	}
+
+	@Override
+	public BoardFile selectFile(Board viewBoard) {
+		// DB연결 객체
+		conn = JDBCTemplate.getConnection();
+
+		// SQL 작성
+		String sql = "";
+		sql += "SELECT * FROM boardfile";
+		sql += " WHERE boardno = ?";
+
+		// 결과 저장할 BoardFile 객체
+		BoardFile boardFile = null;
+
+		try {
+			ps = conn.prepareStatement(sql); // SQL수행 객체
+
+			ps.setInt(1, viewBoard.getBoardno() - 1); // 조회할 boardno 적용
+
+			rs = ps.executeQuery(); // SQL 수행 및 결과집합 저장
+
+			// 조회 결과 처리
+			while (rs.next()) {
+				boardFile = new BoardFile();
+
+				boardFile.setFileno(rs.getInt("fileno"));
+				boardFile.setBoardno(rs.getInt("boardno"));
+				boardFile.setOriginName(rs.getString("originname"));
+				boardFile.setStoredName(rs.getString("storedname"));
+				boardFile.setFilesize(rs.getInt("filesize"));
+				//boardFile.setWritedate(rs.getDate("writtendate"));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// DB객체 닫기
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(ps);
+		}
+
+		// 최종 결과 반환
+		return boardFile;
+
+	}
+
+	@Override
+	public void delete(Board board) {
+		conn = JDBCTemplate.getConnection();
+
+		String sql = "";
+		sql += "DELETE FROM BOARDFILE WHERE BOARDNO = ?";
+
+		try {
+			ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, board.getBoardno());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
 			JDBCTemplate.close(ps);
 		}
 

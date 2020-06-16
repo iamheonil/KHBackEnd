@@ -65,5 +65,21 @@ public interface BoardDao {
 	 * @param boardFile
 	 */
 	public void insertFile(BoardFile boardFile);
+	
+	
+	/**
+	 * 첨부파일의 정보를 가져온다!
+	 * @param viewBoard
+	 * @return
+	 */
+	public BoardFile selectFile(Board viewBoard);
+	
+	
+	/**
+	 * 파일과 첨부파일을 삭제한다.
+	 * 
+	 * @param board - 요청 객체 정보 
+	 */
+	public void delete(Board board);
 
 }

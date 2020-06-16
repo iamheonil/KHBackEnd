@@ -12,6 +12,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@ page import="web.dto.Board"%>
+<%@ page import="web.dto.BoardFile"%>
 
 <c:import url="/WEB-INF/views/layout/header.jsp"></c:import>
 
@@ -47,10 +48,16 @@
 
 <tr><td colspan="4">${viewBoard.content }</td></tr>
 
-</table>
+<tr>
+<td class="info">첨부파일</td><td colspan="3">${boardFile.originName }</td>
+</tr>
 
-<a href="/board/list">목록으로 돌아가기</a>
-	
+</table>
+<div style="text-align:center;">
+<a href="/board/list">목록으로 돌아가기</a> &nbsp;
+<a href="/board/list">수정하기</a> &nbsp;
+<a href="/board/delete">삭제하기</a> &nbsp;
+</div>
 </div> <!-- div.container -->
 
 <c:import url="/WEB-INF/views/layout/footer.jsp"></c:import>
