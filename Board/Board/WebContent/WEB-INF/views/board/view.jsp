@@ -18,6 +18,7 @@ $(document).ready(function() {
 
 	//삭제버튼 동작
 	$("#btnDelete").click(function() {
+		location.href = "/board/delete?boardno=${viewBoard.boardno }";
 	});
 	
 });
@@ -55,12 +56,17 @@ $(document).ready(function() {
 
 <tr><td colspan="4">${viewBoard.content }</td></tr>
 
+
+<tr>
+<td class="info">첨부 파일</td><td colspan="3"><a href="/upload/${boardFile.storedname }" download="${boardFile.originname }">${boardFile.originname }</a></td>
+</tr>
+
 </table>
 
-<div>
+<%-- <div>
 <a href="/upload/${boardFile.storedname }"
  download="${boardFile.originname }">${boardFile.originname }</a>
-</div>
+</div> --%>
 
 <div class="text-center">	
 	<button id="btnList" class="btn btn-primary">목록</button>
@@ -72,5 +78,5 @@ $(document).ready(function() {
 </div>
 
 </div>
-
+<br>
 <c:import url="/WEB-INF/views/layout/footer.jsp" />

@@ -81,4 +81,12 @@ public interface BoardService {
 	 */
 	public BoardFile viewFile(Board viewBoard);
 	
+	/**
+	 * 
+	 * 글을 삭제한다.
+	 * 
+	 * @param board - 글 삭제할 객체 정보
+	 */
+	public void delete(Board board);
+	
 }

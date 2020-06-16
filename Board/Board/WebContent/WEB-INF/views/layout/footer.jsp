@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <div id="footer">
-<small>악플달지마세요!</small>
+<small>뽀롱뽀롱</small>
 </div>
 
 </body>

@@ -46,7 +46,7 @@ form {
 	</div>
 	<div class="form-group">
 		<label for="userpw" class="control-label">패스워드</label>
-		<input type="text" id="userpw" name="userpw" class="form-control"/>
+		<input type="password" id="userpw" name="userpw" class="form-control"/>
 	</div>
 	<div class="form-group">
 		<label for="usernick" class="control-label">닉네임</label>

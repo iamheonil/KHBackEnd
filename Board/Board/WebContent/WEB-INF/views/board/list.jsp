@@ -23,7 +23,7 @@ $(document).ready(function() {
 <hr>
 
 <table class="table table-striped table-hover table-condensed">
-<tr>
+<tr style="color: white; background:skyblue;">
 	<th style="width: 10%;">글번호</th>
 	<th style="width: 45%;">제목</th>
 	<th style="width: 20%;">아이디</th>

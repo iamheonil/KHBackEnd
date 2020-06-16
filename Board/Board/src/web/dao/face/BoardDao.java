@@ -61,9 +61,7 @@ public interface BoardDao {
 	public String selectNickByUserid(Board viewBoard);
 
 	/**
-	 * 다음 게시글 번호 반환
-	 *  게시글 테이블과 첨부파일 테이블에 입력될 게시글번호를
-	 * 시퀀스를 통해 추출한다
+	 * 다음 게시글 번호 반환 게시글 테이블과 첨부파일 테이블에 입력될 게시글번호를 시퀀스를 통해 추출한다
 	 * 
 	 * @return - 다음 게시글 번호
 	 */
@@ -78,10 +76,19 @@ public interface BoardDao {
 
 	/**
 	 * 첨부파일 조회
-	 *  
+	 * 
 	 * @param viewBoard - 첨부파일을 조회할 게시글 객체
 	 * @return BoardFile - 조회된 첨부파일
 	 */
 	public BoardFile selectFile(Board viewBoard);
-	
+
+	/**
+	 * 
+	 * 파일을 삭제한다.
+	 * 
+	 * @param board - Service 에서 넘어온 삭제객체 정보
+	 * 
+	 */
+	public void daoDelete(Board board);
+
 }

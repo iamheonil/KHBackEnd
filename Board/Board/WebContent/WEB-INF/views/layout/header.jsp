@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> : : : LACUNA : : : </title>
+<title> :: 아휴 하기 싫어! </title>
 
 <!-- jQuery 2.2.4 -->
 <script type="text/javascript"
@@ -18,12 +18,12 @@
 <style type="text/css">
 #header {
 	text-align: center;
-	background: #FAFA96;
+	background: skyblue;
 }
 
 #footer {
 	text-align: center;
-	background: #FAFA96;
+	background: skyblue;
 }
 </style>
 
@@ -31,5 +31,5 @@
 <body>
 
 <div id="header">
-	<h1><a href="/">Lacuna</a></h1>
+	<h1><a href="/">니리니리</a></h1>
 </div>
