@@ -1,0 +1,7 @@
+DROP TABLE member;
+
+CREATE TABLE member (
+    userid VARCHAR2(100) PRIMARY KEY,
+    userpw VARCHAR2(100),
+    usernick VARCHAR2(100)
+);
