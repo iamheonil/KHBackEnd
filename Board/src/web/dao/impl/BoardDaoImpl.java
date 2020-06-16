@@ -358,7 +358,7 @@ public class BoardDaoImpl implements BoardDao {
 		try {
 			ps = conn.prepareStatement(sql);
 
-			ps.setInt(1, board.getBoardno());
+			ps.setInt(1, ());
 
 			ps.executeUpdate();
 
