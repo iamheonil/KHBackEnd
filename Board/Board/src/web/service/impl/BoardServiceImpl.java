@@ -261,8 +261,15 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void delete(Board board) {
 
+		boardDao.fileDelete(board);
 		boardDao.daoDelete(board);
 
+	}
+
+	@Override
+	public void update(Board board, HttpServletRequest req) {
+
+		boardDao.daoUpdate(board, req);
 	}
 
 }

@@ -2,6 +2,8 @@ package web.dao.face;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import web.dto.Board;
 import web.dto.BoardFile;
 import web.util.Paging;
@@ -84,11 +86,36 @@ public interface BoardDao {
 
 	/**
 	 * 
-	 * 파일을 삭제한다.
+	 * 게시글을 삭제한다.
 	 * 
 	 * @param board - Service 에서 넘어온 삭제객체 정보
 	 * 
 	 */
 	public void daoDelete(Board board);
+
+	/**
+	 * 
+	 * 파일을 삭제한다.
+	 * 
+	 * @param board - Service 에서 넘어온 삭제객체 정보
+	 */
+	public void fileDelete(Board board);
+
+	/**
+	 * 
+	 * 수정할 게시글의 정보들을 가져온다.
+	 * 
+	 * @param board - 수정할 객체의 정보
+	 * @return viewBoard - 수정할 객체의 글 정보
+	 */
+	public Board selectByBoardno(Board board);
+
+	/**
+	 * 
+	 * 게시글을 수정한다.
+	 * 
+	 * @param board
+	 */
+	public void daoUpdate(Board board, HttpServletRequest req);
 
 }

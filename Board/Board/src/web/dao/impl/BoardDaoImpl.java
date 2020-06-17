@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import web.dao.face.BoardDao;
 import web.dbutil.JDBCTemplate;
 import web.dto.Board;
@@ -431,6 +433,103 @@ public class BoardDaoImpl implements BoardDao {
 			JDBCTemplate.close(ps);
 		}
 
+	}
+
+	@Override
+	public void fileDelete(Board board) {
+		conn = JDBCTemplate.getConnection();
+
+		// SQL 작성
+		String sql = "";
+		sql += "DELETE FROM BOARDFILE WHERE BOARDNO = ?";
+
+		try {
+			ps = conn.prepareStatement(sql); // SQL수행 객체
+
+			ps.setInt(1, board.getBoardno()); // 게시글 번호 적용
+
+			ps.executeUpdate(); // SQL 수행
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// DB객체 닫기
+			JDBCTemplate.close(ps);
+		}
+
+	}
+
+	@Override
+	public Board selectByBoardno(Board board) {
+		// DB연결 객체
+		conn = JDBCTemplate.getConnection();
+
+		// SQL 작성
+		String sql = "";
+		sql += "SELECT * FROM board";
+		sql += " WHERE boardno = ?";
+
+		// 결과 저장할 Board객체
+		Board viewBoard = null;
+
+		try {
+			ps = conn.prepareStatement(sql); // SQL수행 객체
+
+			ps.setInt(1, board.getBoardno()); // 조회할 게시글 번호 적용
+
+			rs = ps.executeQuery(); // SQL 수행 및 결과집합 저장
+
+			// 조회 결과 처리
+			while (rs.next()) {
+				viewBoard = new Board(); // 결과값 저장 객체
+
+				// 결과값 한 행 처리
+				viewBoard.setBoardno(rs.getInt("boardno"));
+				viewBoard.setTitle(rs.getString("title"));
+				viewBoard.setId(rs.getString("id"));
+				viewBoard.setContent(rs.getString("content"));
+				viewBoard.setHit(rs.getInt("hit"));
+				viewBoard.setWrittendate(rs.getDate("writtendate"));
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			// DB객체 닫기
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(ps);
+		}
+
+		// 최종 결과 반환
+		return viewBoard;
+	}
+
+	@Override
+	public void daoUpdate(Board board, HttpServletRequest req) {
+
+		conn = JDBCTemplate.getConnection(); // DB 연결
+
+		// 다음 게시글 번호 조회 쿼리
+		String sql = "";
+		sql += "UPDATE BOARD SET TITLE = ?, CONTENT = ?";
+		sql += " WHERE board = ? ";
+
+		try {
+			// DB작업
+			ps = conn.prepareStatement(sql);
+
+			ps.setString(1, board.getTitle());
+			ps.setString(2, board.getContent());
+			ps.setInt(3, board.getBoardno());
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(ps);
+		}
 	}
 
 }

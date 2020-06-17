@@ -20,8 +20,7 @@ public interface BoardService {
 	/**
 	 * 페이징 객체 생성
 	 * 
-	 * 요청정보를 활용하여 curPage를 구하고
-	 * Board 테이블과 curPage 값을 이용한 Paging 객체를 생성하여 반환한다
+	 * 요청정보를 활용하여 curPage를 구하고 Board 테이블과 curPage 값을 이용한 Paging 객체를 생성하여 반환한다
 	 * 
 	 * @param req - curPage정보를 담고 있는 요청정보 객체
 	 * @return Paging - 페이징 계산이 완료된 결과 객체
@@ -45,20 +44,17 @@ public interface BoardService {
 	public Board getBoardno(HttpServletRequest req);
 
 	/**
-	 * 주어진 boardno를 이용하여 게시글을 조회한다
-	 * 조회된 게시글의 조회수를 1 증가시킨다
+	 * 주어진 boardno를 이용하여 게시글을 조회한다 조회된 게시글의 조회수를 1 증가시킨다
 	 * 
 	 * @param boardno - boardno를 가지고 있는 객체
 	 * @return Board - 조회된 게시글
 	 */
 	public Board view(Board boardno);
-	
-	
+
 	/**
-	 * 게시글 작성
-	 * 	입력한 게시글 내용을 DB에 저장
+	 * 게시글 작성 입력한 게시글 내용을 DB에 저장
 	 * 
-	 *  첨부파일을 함께 업로드 할 수 있도록 처리
+	 * 첨부파일을 함께 업로드 할 수 있도록 처리
 	 * 
 	 * @param req - 요청정보 객체(게시글내용 + 첨부파일)
 	 * 
@@ -75,12 +71,12 @@ public interface BoardService {
 
 	/**
 	 * 첨부파일의 정보 얻기
-	 *  
+	 * 
 	 * @param viewBoard - 첨부파일 포함된 게시글 번호
 	 * @return BoardFile - 첨부파일 정보 객체
 	 */
 	public BoardFile viewFile(Board viewBoard);
-	
+
 	/**
 	 * 
 	 * 글을 삭제한다.
@@ -88,5 +84,12 @@ public interface BoardService {
 	 * @param board - 글 삭제할 객체 정보
 	 */
 	public void delete(Board board);
-	
+
+	/**
+	 * 게시글을 수정한다.
+	 * 
+	 * @param board
+	 */
+	public void update(Board board, HttpServletRequest req);
+
 }

@@ -14,6 +14,7 @@ $(document).ready(function() {
 	
 	//수정버튼 동작
 	$("#btnUpdate").click(function() {
+		location.href = "/board/update?boardno=${viewBoard.boardno }";
 	});
 
 	//삭제버튼 동작

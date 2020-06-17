@@ -17,34 +17,34 @@ import web.service.impl.BoardServiceImpl;
 public class BoardViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	//BoardService 객체 생성
+	// BoardService 객체 생성
 	private BoardService boardService = new BoardServiceImpl();
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//전달파라미터 얻기 - boardno
+		// 전달파라미터 얻기 - boardno
 		Board boardno = boardService.getBoardno(req);
-		
-		//상세보기 결과 조회
+
+		// 상세보기 결과 조회
 		Board viewBoard = boardService.view(boardno);
-		
-		// System.out.println(boardno);
-		// System.out.println(viewBoard);
-		
-		//첨부파일 정보 VIEW에 전달
+
+		System.out.println(boardno);
+		System.out.println(viewBoard);
+
+		// 첨부파일 정보 VIEW에 전달
 		BoardFile boardFile = boardService.viewFile(viewBoard);
 		req.setAttribute("boardFile", boardFile);
-		
-		//닉네임 전달
+
+		// 닉네임 전달
 		req.setAttribute("nick", boardService.getNick(viewBoard));
-		
-		//조회결과 MODEL값 전달
+
+		// 조회결과 MODEL값 전달
 		req.setAttribute("viewBoard", viewBoard);
-		
-		//VIEW 지정 및 응답 - forward
-		req.getRequestDispatcher("/WEB-INF/views/board/view.jsp").forward(req, resp);		
+
+		// VIEW 지정 및 응답 - forward
+		req.getRequestDispatcher("/WEB-INF/views/board/view.jsp").forward(req, resp);
 
 	}
-	
+
 }
