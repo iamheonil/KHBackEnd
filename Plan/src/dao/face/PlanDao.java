@@ -2,16 +2,16 @@ package dao.face;
 
 import java.util.List;
 
-import dto.Calendar;
+import dto.Plan;
 
-public interface CalendarDao {
+public interface PlanDao {
 
 	/**
 	 * 일정을 추가한다.
 	 * 
 	 * @return ListObj - 일정 추가할 정보
 	 */
-	public List<Calendar> add();
+	public List<Plan> add();
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public interface CalendarDao {
 	 * 
 	 * @param calendar - 수정할 객체의 정보
 	 */
-	public void modify(Calendar calendar);
+	public void modify(Plan calendar);
 
 	/**
 	 * 
@@ -27,6 +27,6 @@ public interface CalendarDao {
 	 * 
 	 * @param calendar - 삭제할 객체의 정보
 	 */
-	public void delete(Calendar calendar);
+	public void delete(Plan calendar);
 
 }

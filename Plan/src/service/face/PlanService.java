@@ -2,9 +2,9 @@ package service.face;
 
 import java.util.List;
 
-import dto.Calendar;
+import dto.Plan;
 
-public interface CalendarService {
+public interface PlanService {
 
 	/**
 	 * 
@@ -12,7 +12,7 @@ public interface CalendarService {
 	 * 
 	 * @return calendar - 추가한 일정 List
 	 */
-	public List<Calendar> calendarAdd();
+	public List<Plan> calendarAdd();
 
 	/**
 	 * 
@@ -20,7 +20,7 @@ public interface CalendarService {
 	 * 
 	 * @param calendar - 수정 할 일정의 정보
 	 */
-	public void calendarModify(Calendar calendar);
+	public void calendarModify(Plan calendar);
 
 	/**
 	 * 
@@ -28,6 +28,6 @@ public interface CalendarService {
 	 * 
 	 * @param calendar - 삭제 할 일정의 정보
 	 */
-	public void calendarDelete(Calendar calendar);
+	public void calendarDelete(Plan calendar);
 
 }

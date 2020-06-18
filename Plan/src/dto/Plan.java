@@ -2,7 +2,7 @@ package dto;
 
 import java.util.Date;
 
-public class Calendar {
+public class Plan {
 
 	private int userid;
 	private String pname;
