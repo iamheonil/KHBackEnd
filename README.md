@@ -17,4 +17,4 @@ MVC 패턴, Ajax, 이클립스와 Tomcat 연동 방법
 <br>
 
 분량이 많아 BackEnd2 리포지토리도 만들었습니다
-<a href="https://github.com/iamheonil/KHBackEnd" target="_blank">리포지토리 바로가기</a>
+<a href="https://github.com/iamheonil/KHBackEnd2" target="_blank">리포지토리 바로가기</a>
